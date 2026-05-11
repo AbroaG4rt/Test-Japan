@@ -1,145 +1,16 @@
-<!DOCTYPE html>
-<html lang="id">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Ujian — OMOSHIROI JAPAN</title>
-    <meta name="description" content="Hasil simulasi JLPT dengan analisis performa per seksi dan tips belajar personal.">
-    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
-    <link rel="alternate" hreflang="id" href="result.html">
-    <link rel="alternate" hreflang="en" href="../en/result.html">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/result.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>OMOSHIROI JAPAN</title>
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
 </head>
-<body class="result-page">
-
-    <!-- HEADER -->
-    <header class="result-header">
-        <div class="result-header-inner">
-            <a href="dashboard.html" class="brand result-brand">
-                <img src="../assets/images/logo.png" alt="Logo" class="result-logo">
-                OMOSHIROI
-            </a>
-            <nav class="result-nav">
-                <a href="dashboard.html" class="btn-nav-link">← Dasbor</a>
-                <a href="../en/result.html" onclick="localStorage.setItem('lang','en')" class="lang-toggle">EN</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="result-hero">
-        <div class="result-container">
-            <div class="result-hero-inner">
-                <div class="result-title-block">
-                    <div class="result-level-badge" id="levelBadge">N5</div>
-                    <h1 class="result-title">Hasil Ujian</h1>
-                    <p class="result-date" id="resultDate">—</p>
-                </div>
-                <div class="score-ring-wrap">
-                    <div class="score-ring" id="scoreRingContainer">
-                        <svg class="score-ring-svg" viewBox="0 0 120 120">
-                            <circle class="score-ring-bg" cx="60" cy="60" r="50"/>
-                            <circle class="score-ring-fill" id="scoreRingFill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314"/>
-                        </svg>
-                        <div class="score-ring-label">
-                            <span class="score-pct" id="totalScorePct">0%</span>
-                            <span class="score-sub" id="totalFraction">0 / 0</span>
-                        </div>
-                    </div>
-                    <div class="result-verdict">
-                        <span class="verdict-badge" id="verdictBadge">—</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION ANALYTICS -->
-    <section class="result-section-analytics">
-        <div class="result-container">
-            <h2 class="section-heading">Performa per Seksi</h2>
-            <div class="section-cards-grid" id="sectionCardsGrid"></div>
-        </div>
-    </section>
-
-    <!-- CHART -->
-    <section class="result-chart-section">
-        <div class="result-container result-two-col">
-            <div class="result-chart-card">
-                <h3 class="card-title">Distribusi Keseluruhan</h3>
-                <div class="chart-wrap"><canvas id="resultChart"></canvas></div>
-            </div>
-            <div class="result-summary-card">
-                <h3 class="card-title">Ringkasan Skor</h3>
-                <div class="summary-rows" id="summaryRows"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TIPS -->
-    <section class="result-tips-section">
-        <div class="result-container">
-            <div class="tips-card">
-                <div class="tips-header">
-                    <span class="tips-icon" id="tipsIcon">💡</span>
-                    <div>
-                        <h2 class="tips-title" id="tipsTitle">Wawasan Belajar</h2>
-                        <p class="tips-sub" id="tipsSub">Tips personal berdasarkan hasil ujianmu</p>
-                    </div>
-                </div>
-                <div class="tips-quote" id="tipsQuote"></div>
-                <div class="tips-grid" id="tipsGrid"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ACTIONS -->
-    <section class="result-actions">
-        <div class="result-container">
-            <div class="actions-grid">
-                <button id="downloadPdfBtn" class="action-btn action-btn-primary">
-                    <span class="action-btn-icon">📥</span>
-                    <span class="action-btn-label">Unduh Laporan</span>
-                    <span class="action-btn-sub">Laporan PDF lengkap</span>
-                </button>
-                <a href="dashboard.html" class="action-btn action-btn-secondary">
-                    <span class="action-btn-icon">🏠</span>
-                    <span class="action-btn-label">Dasbor</span>
-                    <span class="action-btn-sub">Kembali ke beranda</span>
-                </a>
-                <button id="retryBtn" class="action-btn action-btn-secondary">
-                    <span class="action-btn-icon">🔄</span>
-                    <span class="action-btn-label">Ulangi Tes</span>
-                    <span class="action-btn-sub">Level sama, soal acak</span>
-                </button>
-                <button id="shareQrBtn" class="action-btn action-btn-outline">
-                    <span class="action-btn-icon">📷</span>
-                    <span class="action-btn-label">Bagikan Hasil</span>
-                    <span class="action-btn-sub">Kode QR</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- QR MODAL -->
-    <div class="modal-backdrop hidden" id="qrModalBackdrop">
-        <div class="modal-box">
-            <button class="modal-close" id="qrModalClose">✕</button>
-            <h3 class="modal-title">Bagikan Hasil Ujian</h3>
-            <p class="modal-sub">Scan atau unduh kode QR untuk berbagi hasil ini.</p>
-            <div id="qrcode" class="qr-box"></div>
-            <p class="result-id-text" id="resultIdText">Result ID: —</p>
-            <button class="btn-download-qr" id="downloadQrBtn">⬇ Unduh Gambar QR</button>
-        </div>
-    </div>
-
-    <script>window.__resultLang = 'id'; window.__dashTarget = 'dashboard.html';</script>
-    <script src="../assets/js/utils.js"></script>
-    <script src="../assets/js/result.js"></script>
-    <div class="nav-overlay" id="mobileNavOverlay"></div>
+<body>
+    <script>
+        (function() {
+            var lang = localStorage.getItem('lang') || 'id';
+            window.location.replace(lang === 'en' ? 'en/result.html' : 'id/result.html');
+        })();
+    <\/script>
 </body>
 </html>
